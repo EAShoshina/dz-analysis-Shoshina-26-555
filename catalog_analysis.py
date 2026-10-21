@@ -111,6 +111,32 @@ def top_n_by_rating(movies: list[dict], n: int = 3) -> list[tuple[str, float]]:
     return [(m["title"], m["rating"]) for m in sorted_movies[:n]]
 
 
+def count_by_genre(movies: list[dict]) -> dict[str, int]:
+    """Возвращает словарь {жанр: количество фильмов}."""
+    result: dict[str, int] = {}
+    for movie in movies:
+        for genre in movie["genres"]:
+            result[genre] = result.get(genre, 0) + 1
+    return result
+
+
+def actor_filmography(movies: list[dict]) -> dict[str, list[str]]:
+    """Возвращает словарь {актер: [список названий фильмов]}."""
+    result: dict[str, list[str]] = {}
+    for movie in movies:
+        for actor in movie["actors"]:
+            if actor not in result:
+                result[actor] = []
+            result[actor].append(movie["title"])
+    return result
+
+
+def above_average_ratings(movies: list[dict]) -> dict[str, float]:
+    """Возвращает {title: rating} только для фильмов с рейтингом выше среднего."""
+    avg = average_rating(movies)
+    return {m["title"]: m["rating"] for m in movies if m["rating"] > avg}
+
+
 def main() -> None:
     # Этап 1
     print("Этап 1")
@@ -190,6 +216,20 @@ def main() -> None:
 
     print("\nПроверка: исходный movies не изменён")
     print('movies[0]["title"] =', movies[0]["title"])
+
+    # Этап 6
+    print("\nЭтап 6: словари")
+    print("count_by_genre(movies):")
+    for genre, count in sorted(count_by_genre(movies).items()):
+        print(f"  {genre}: {count}")
+
+    print("\nactor_filmography(movies):")
+    for actor, films in sorted(actor_filmography(movies).items()):
+        print(f"  {actor}: {films}")
+
+    print("\nabove_average_ratings(movies):")
+    for title, rating in above_average_ratings(movies).items():
+        print(f"  {title!r}: {rating}")
 
 
 if __name__ == "__main__":

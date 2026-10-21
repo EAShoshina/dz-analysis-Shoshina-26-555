@@ -2,7 +2,8 @@ import math
 
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
-     "rating": 8.6, "duration_min": 155, "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
+     "rating": 8.6, "duration_min": 155,
+     "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
     {"title": "Kitchen Stories", "year": 2019, "genres": {"comedy", "drama"},
      "rating": 7.1, "duration_min": 98, "actors": ["A. Novak", "M. Ferguson"]},
     {"title": "silent hours", "year": 2016, "genres": {"thriller", "drama"},
@@ -30,7 +31,9 @@ def average_rating(movies: list[dict]) -> float:
     return round(total / len(movies), 1)
 
 
-def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple[int, int, int]:
+def catalog_age_stats(
+    movies: list[dict], current_year: int = 2026
+) -> tuple[int, int, int]:
     """Возвращает (возраст самого старого, возраст самого нового, средний возраст)."""
     ages = [current_year - movie["year"] for movie in movies]
     return (max(ages), min(ages), math.ceil(sum(ages) / len(ages)))

@@ -99,6 +99,18 @@ def format_report_line(movie: dict) -> str:
     )
 
 
+def titles_sorted_by_rating(movies: list[dict]) -> list[str]:
+    """Возвращает список названий фильмов, отсортированных по убыванию рейтинга."""
+    sorted_movies = sorted(movies, key=lambda m: m["rating"], reverse=True)
+    return [m["title"] for m in sorted_movies]
+
+
+def top_n_by_rating(movies: list[dict], n: int = 3) -> list[tuple[str, float]]:
+    """Возвращает топ-n фильмов по рейтингу в виде списка кортежей (title, rating)."""
+    sorted_movies = sorted(movies, key=lambda m: m["rating"], reverse=True)
+    return [(m["title"], m["rating"]) for m in sorted_movies[:n]]
+
+
 def main() -> None:
     # Этап 1
     print("Этап 1")
@@ -161,6 +173,23 @@ def main() -> None:
     print('make_slug("midnight in oslo") =', make_slug("midnight in oslo"))
     print('format_report_line(movies[7]) =', format_report_line(movies[7]))
     print('format_report_line(movies[2]) =', format_report_line(movies[2]))
+
+    # Этап 5
+    print("\nЭтап 5: списки")
+    print("titles_sorted_by_rating(movies):")
+    for title in titles_sorted_by_rating(movies):
+        print(" ", title)
+
+    print("\ntop_n_by_rating(movies, 3):")
+    for item in top_n_by_rating(movies, 3):
+        print(" ", item)
+
+    print("\ntop_n_by_rating(movies, 5):")
+    for item in top_n_by_rating(movies, 5):
+        print(" ", item)
+
+    print("\nПроверка: исходный movies не изменён")
+    print('movies[0]["title"] =', movies[0]["title"])
 
 
 if __name__ == "__main__":

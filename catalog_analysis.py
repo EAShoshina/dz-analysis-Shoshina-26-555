@@ -73,6 +73,32 @@ def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
     return count
 
 
+def normalize_title(title: str) -> str:
+    """Приводит строку к Title Case без str.title()."""
+    words = title.split()
+    normalized = []
+    for word in words:
+        normalized.append(word[0].upper() + word[1:])
+    return " ".join(normalized)
+
+
+def make_slug(title: str) -> str:
+    """Превращает нормализованное название в слаг вида the-quiet-algorithm."""
+    normalized = normalize_title(title)
+    return normalized.lower().replace(" ", "-")
+
+
+def format_report_line(movie: dict) -> str:
+    """Возвращает строку отчёта о фильме."""
+    title = normalize_title(movie["title"])
+    duration = duration_in_hours(movie["duration_min"])
+    genres = ", ".join(sorted(movie["genres"]))
+    return (
+        f'"{title}" ({movie["year"]}) — '
+        f'{movie["rating"]}/10, {duration}, жанры: {genres}'
+    )
+
+
 def main() -> None:
     # Этап 1
     print("Этап 1")
@@ -81,7 +107,7 @@ def main() -> None:
     print("155 минут =", duration_in_hours(155))
     print("89 минут =", duration_in_hours(89))
 
-    # Этап 2 
+    # Этап 2
     print("\nЭтап 2")
     print("rating_tier(9.5) =", rating_tier(9.5))
     print("rating_tier(7.0) =", rating_tier(7.0))
@@ -95,8 +121,8 @@ def main() -> None:
     print("decade_label(2014) =", decade_label(2014))
     print("decade_label(2021) =", decade_label(2021))
 
-    # Этап 3 
-    print("\nЭтап 3: фильмы не комедии (for + continue)которые НЕ относятся к жанру 'comedy'")
+    # Этап 3
+    print("\nЭтап 3: фильмы не комедии (for + continue) которые НЕ относятся к жанру 'comedy'")
     for movie in movies:
         if "comedy" in movie["genres"]:
             continue
@@ -126,6 +152,15 @@ def main() -> None:
     print("\nКоличество фильмов длиннее 120 минут")
     print("count_long_movies(movies) =", count_long_movies(movies))
     print("count_long_movies(movies, 100) =", count_long_movies(movies, 100))
+
+    # Этап 4
+    print("\nЭтап 4: строки")
+    print('normalize_title("silent hours") =', normalize_title("silent hours"))
+    print('normalize_title("midnight in oslo") =', normalize_title("midnight in oslo"))
+    print('make_slug("Silent Hours") =', make_slug("Silent Hours"))
+    print('make_slug("midnight in oslo") =', make_slug("midnight in oslo"))
+    print('format_report_line(movies[7]) =', format_report_line(movies[7]))
+    print('format_report_line(movies[2]) =', format_report_line(movies[2]))
 
 
 if __name__ == "__main__":

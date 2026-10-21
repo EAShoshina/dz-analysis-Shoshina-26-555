@@ -137,6 +137,30 @@ def above_average_ratings(movies: list[dict]) -> dict[str, float]:
     return {m["title"]: m["rating"] for m in movies if m["rating"] > avg}
 
 
+def all_genres(movies: list[dict]) -> set[str]:
+    """Возвращает множество всех уникальных жанров каталога."""
+    result: set[str] = set()
+    for movie in movies:
+        result |= movie["genres"]
+    return result
+
+
+def common_actors(movie1: dict, movie2: dict) -> set[str]:
+    """Возвращает множество актеров, снимавшихся в обоих фильмах."""
+    return set(movie1["actors"]) & set(movie2["actors"])
+
+
+def genres_only_in_one(movies_a: list[dict], movies_b: list[dict]) -> set[str]:
+    """Возвращает жанры, встречающиеся в movies_a, но не встречающиеся в movies_b."""
+    genres_a: set[str] = set()
+    genres_b: set[str] = set()
+    for movie in movies_a:
+        genres_a |= movie["genres"]
+    for movie in movies_b:
+        genres_b |= movie["genres"]
+    return genres_a - genres_b
+
+
 def main() -> None:
     # Этап 1
     print("Этап 1")
@@ -230,6 +254,22 @@ def main() -> None:
     print("\nabove_average_ratings(movies):")
     for title, rating in above_average_ratings(movies).items():
         print(f"  {title!r}: {rating}")
+
+    # Этап 7
+    print("\nЭтап 7: множества")
+    print("all_genres(movies) =", sorted(all_genres(movies)))
+
+    print("\ncommon_actors(movies[0], movies[3]) =",
+          common_actors(movies[0], movies[3]))
+    print("common_actors(movies[0], movies[5]) =",
+          common_actors(movies[0], movies[5]))
+    print("common_actors(movies[1], movies[8]) =",
+          common_actors(movies[1], movies[8]))
+
+    print("\ngenres_only_in_one(movies[5:6], movies[:5]) =",
+          genres_only_in_one(movies[5:6], movies[:5]))
+    print("genres_only_in_one(movies[:5], movies[5:6]) =",
+          genres_only_in_one(movies[:5], movies[5:6]))
 
 
 if __name__ == "__main__":

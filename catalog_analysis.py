@@ -67,6 +67,26 @@ def decade_label(year: int) -> str:
             return "старые"
 
 
+def print_non_comedy_titles(movies: list[dict]) -> None:
+    """Этап 3: печатает названия не-комедий (демонстрация for + continue)."""
+    for movie in movies:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
+
+
+def find_first_high_rated(movies: list[dict]) -> None:
+    """Этап 3: ищет первый фильм с рейтингом > 9.0 (демо while + break + else)."""
+    index = 0
+    while index < len(movies):
+        if movies[index]["rating"] > 9.0:
+            movie = movies[index]
+            print(f"Найден: {movie['title']} — рейтинг {movie['rating']}")
+            break
+        index += 1
+    else:
+        print("Шедевров не найдено")
+
 def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
     """Считает количество фильмов длиннее threshold минут (без sum() по списку)."""
     count = 0

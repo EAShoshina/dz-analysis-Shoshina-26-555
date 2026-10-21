@@ -161,6 +161,13 @@ def genres_only_in_one(movies_a: list[dict], movies_b: list[dict]) -> set[str]:
     return genres_a - genres_b
 
 
+def iter_high_rated(movies: list[dict], min_rating: float = 8.0):
+    """Лениво отдаёт фильмы с рейтингом не ниже min_rating."""
+    for movie in movies:
+        if movie["rating"] >= min_rating:
+            yield movie
+
+
 def main() -> None:
     # Этап 1
     print("Этап 1")
@@ -270,6 +277,16 @@ def main() -> None:
           genres_only_in_one(movies[5:6], movies[:5]))
     print("genres_only_in_one(movies[:5], movies[5:6]) =",
           genres_only_in_one(movies[:5], movies[5:6]))
+
+    # Этап 8
+    print("\nЭтап 8: итераторы и генераторы")
+    print("Фильмы с рейтингом >= 8.0 (iter_high_rated):")
+    for movie in iter_high_rated(movies):
+        print(" ", format_report_line(movie))
+
+    total_duration = sum(m["duration_min"] for m in movies if m["rating"] > 7)
+    print("\nСуммарная длительность фильмов с рейтингом > 7 (мин):", total_duration)
+    print("В часах:", duration_in_hours(total_duration))
 
 
 if __name__ == "__main__":

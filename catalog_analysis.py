@@ -64,25 +64,68 @@ def decade_label(year: int) -> str:
             return "старые"
 
 
+def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
+    """Считает количество фильмов длиннее threshold минут (без sum() по списку)."""
+    count = 0
+    for movie in movies:
+        if movie["duration_min"] > threshold:
+            count += 1
+    return count
+
+
 def main() -> None:
+    # Этап 1
+    print("Этап 1")
     print("Средняя оценка:", average_rating(movies))
     print("Статистика возраста:", catalog_age_stats(movies))
     print("155 минут =", duration_in_hours(155))
     print("89 минут =", duration_in_hours(89))
 
-    print("\n--- Этап 2 ---")
+    # Этап 2 
+    print("\nЭтап 2")
     print("rating_tier(9.5) =", rating_tier(9.5))
     print("rating_tier(7.0) =", rating_tier(7.0))
     print("rating_tier(5.5) =", rating_tier(5.5))
     print("rating_tier(4.9) =", rating_tier(4.9))
     print("rating_tier(9.0) =", rating_tier(9.0))
     print("rating_tier(8.9) =", rating_tier(8.9))
-
     print("decade_label(2024) =", decade_label(2024))
     print("decade_label(2020) =", decade_label(2020))
     print("decade_label(2015) =", decade_label(2015))
     print("decade_label(2014) =", decade_label(2014))
     print("decade_label(2021) =", decade_label(2021))
+
+    # Этап 3 
+    print("\nЭтап 3: фильмы не комедии (for + continue)которые НЕ относятся к жанру 'comedy'")
+    for movie in movies:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
+
+    print("\nПервый фильм с рейтингом > 9.0 (while + break + else)")
+    index = 0
+    while index < len(movies):
+        if movies[index]["rating"] > 9.0:
+            print("Найден:", movies[index]["title"], "— рейтинг", movies[index]["rating"])
+            break
+        index += 1
+    else:
+        print("Шедевров не найдено")
+
+    print("\nПроверка ветки else (список без шедевров)")
+    movies_without_masterpieces = [m for m in movies if m["rating"] <= 9.0]
+    index = 0
+    while index < len(movies_without_masterpieces):
+        if movies_without_masterpieces[index]["rating"] > 9.0:
+            print("Найден:", movies_without_masterpieces[index]["title"])
+            break
+        index += 1
+    else:
+        print("Шедевров не найдено")
+
+    print("\nКоличество фильмов длиннее 120 минут")
+    print("count_long_movies(movies) =", count_long_movies(movies))
+    print("count_long_movies(movies, 100) =", count_long_movies(movies, 100))
 
 
 if __name__ == "__main__":

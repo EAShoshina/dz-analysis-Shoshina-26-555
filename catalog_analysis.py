@@ -43,11 +43,46 @@ def duration_in_hours(minutes: int) -> str:
     return f"{hours}ч {mins}м"
 
 
+def rating_tier(rating: float) -> str:
+    """Возвращает категорию оценки: шедевр / хорошо / средне / слабо."""
+    if rating >= 9:
+        return "шедевр"
+    elif rating >= 7:
+        return "хорошо"
+    else:
+        return "средне" if rating >= 5 else "слабо"
+
+
+def decade_label(year: int) -> str:
+    """Возвращает метку десятилетия: новые / недавние / старые."""
+    match year:
+        case _ if year > 2020:
+            return "новые"
+        case _ if year >= 2015:
+            return "недавние"
+        case _:
+            return "старые"
+
+
 def main() -> None:
     print("Средняя оценка:", average_rating(movies))
     print("Статистика возраста:", catalog_age_stats(movies))
     print("155 минут =", duration_in_hours(155))
     print("89 минут =", duration_in_hours(89))
+
+    print("\n--- Этап 2 ---")
+    print("rating_tier(9.5) =", rating_tier(9.5))
+    print("rating_tier(7.0) =", rating_tier(7.0))
+    print("rating_tier(5.5) =", rating_tier(5.5))
+    print("rating_tier(4.9) =", rating_tier(4.9))
+    print("rating_tier(9.0) =", rating_tier(9.0))
+    print("rating_tier(8.9) =", rating_tier(8.9))
+
+    print("decade_label(2024) =", decade_label(2024))
+    print("decade_label(2020) =", decade_label(2020))
+    print("decade_label(2015) =", decade_label(2015))
+    print("decade_label(2014) =", decade_label(2014))
+    print("decade_label(2021) =", decade_label(2021))
 
 
 if __name__ == "__main__":
